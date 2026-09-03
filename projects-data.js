@@ -772,4 +772,34 @@ window.BTR_PROJECTS = [
     recommended: "Ideally some basic knowledge of biochemistry and cellular metabolism, plus computational and scripting skills, preferably in Matlab.",
     dateAdded: "2026-05"
   },
+  {
+    title: "Pathway and Network-Based Analysis of Gene Expression Data",
+    supervisor: "Dr. Martina Summer-Kutmon & Dr. Ruth Grosseholz",
+    institution: "Maastricht Centre for Systems Biology and Bioinformatics (MaCSBio), FSE",
+    location: "Maastricht",
+    email: "martina.kutmon@maastrichtuniversity.nl",
+    disciplines: ["Bioinformatics","Biomedical Sciences","Biotechnology"],
+    types: ["Data Analysis"],
+    description: "Perform a gene expression analysis project following a standard pathway- and network-based analysis pipeline, choosing your own research direction (a specific disease, organism or biological process).",
+    background: "To gain insights into the molecular mechanisms underlying a biological process or disease, students perform a gene expression analysis project following a standard pathway and network-based analysis pipeline. All analyses are automated in R, and students also learn how to use GitHub for code version control.",
+    details: ["Dataset selection: choose a gene expression dataset (microarray or RNA-seq) relevant to a biological question or disease of interest; the supervisors support the selection","Preprocessing and differential expression analysis: quality control, normalisation, and identification of differentially expressed genes between conditions","Pathway enrichment analysis: identify significantly enriched pathways among the differentially expressed genes (e.g. ORA, GSEA)","Pathway visualisation and data overlay: visualise expression data in the context of relevant pathways","Network-based analysis: construct and analyse protein-protein interaction networks around genes and pathways of interest, using tools such as Cytoscape","Biological interpretation: connect the pathway and network results back to the underlying biology or disease mechanism and formulate a conclusion"],
+    methods: "R (automated analysis pipeline), pathway enrichment (ORA, GSEA), Cytoscape, GitHub version control",
+    note: "Co-supervised project; contacts: martina.kutmon@maastrichtuniversity.nl and ruth.grosseholz@maastrichtuniversity.nl.",
+    dateAdded: "2026-08"
+  },
+  {
+    title: "Lattice QCD",
+    supervisor: "Dr. Keri Vos",
+    institution: "GWFP, Maastricht University, Faculty of Science and Engineering",
+    location: "Maastricht",
+    email: "k.vos@maastrichtuniversity.nl",
+    disciplines: ["Physics"],
+    types: ["Data Analysis","Simulation","Modelling"],
+    description: "Dive into Lattice QCD, a powerful method in which spacetime is discretised on a lattice, and learn how theoretical quantities for the real world are extracted in the continuum limit.",
+    background: "Lattice QCD puts quantum field theory (and quantum mechanics) on a discrete spacetime grid. In this project we investigate how lattice QCD works, what the implications are of discretising spacetime on a lattice, and how theoretical quantities for the real world can be extracted from it in the continuum limit.",
+    methods: "Theoretical analysis, numerical simulation, modelling",
+    recommended: "Quantum Mechanics",
+    note: "Contact the supervisor for more detailed information. The project can be tuned more theoretical or can have a programming component.",
+    dateAdded: "2026-06"
+  },
 ];
