@@ -18,9 +18,10 @@
     exact steps.
 
   PAGE STRUCTURE:
-    1. <header> — top bar with logos and nav
-    2. <section class="hero"> — page title
-    3. <main> — splits into:
+    1. the shared MSP sidebar on the left: nav.js builds it from the one
+       site navigation (assets/msp-ui/msp-shell.js does the rendering)
+    2. <section class="msp-hero"> — page title
+    3. <div class="layout"> — splits into:
          <form id="btr-form"> — the actual form (left column)
          <aside>              — clickable info cards (right column)
     4. <div class="info-modal"> — popup that opens when an info card is clicked
@@ -46,170 +47,120 @@
 <meta name="description" content="Submit a Bachelor Thesis Research (BTR) project proposal for students of the Maastricht Science Programme.">
 <link rel="icon" type="image/png" href="msp-logo.png">
 <link rel="apple-touch-icon" href="msp-logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/msp-ui/msp-ui.css">
+<link rel="stylesheet" href="styles.css">
 <style>
-  :root{
-    --navy:#001C3D;
-    --accent:#00A2DB;
-    --ink:#0f1a2b;
-    --muted:#5b6472;
-    --line:#e3e6ec;
-    --bg:#ffffff;
-    --bg-soft:#f7f8fa;
-    --max:1100px;
-    --radius:8px;
-    --serif:'Fraunces',Georgia,'Times New Roman',serif;
-    --sans:'Inter Tight',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  /* Page block for the submission form (tokens come from styles.css / the kit) */
+  .page-submit-project { --accent: var(--msp-orange); --ink: var(--msp-g9); --muted: var(--msp-g5); --line: var(--msp-g2); }
+  .page-submit-project .layout a:not(.msp-btn) { color: var(--navy); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .page-submit-project .layout a:not(.msp-btn):hover { color: var(--accent); }
+
+  /* two columns: form + info cards */
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; align-items: start; }
+  @media (max-width: 920px) { .layout { grid-template-columns: 1fr; gap: 24px; } }
+
+  section.intro { margin-bottom: 28px; }
+  section.intro h2 { font-size: 20px; color: var(--navy); margin: 0 0 10px; font-weight: 700; letter-spacing: -.01em; }
+  section.intro p { margin: 0 0 12px; color: var(--msp-g7); font-size: 14px; line-height: 1.7; }
+
+  .cohorts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  @media (max-width: 600px) { .cohorts { grid-template-columns: 1fr; } }
+  .cohort { border: 1px solid var(--line); border-radius: var(--msp-r); padding: 14px 16px; background: #fff; box-shadow: var(--msp-sh); display: flex; gap: 12px; align-items: flex-start; }
+  .cohort .ico { width: 34px; height: 34px; flex-shrink: 0; border-radius: 8px; background: var(--msp-a-bg); display: grid; place-items: center; color: var(--navy); }
+  .cohort .ico svg { width: 17px; height: 17px; }
+  .cohort h4 { margin: 0 0 3px; font-size: 13.5px; color: var(--navy); font-weight: 600; }
+  .cohort p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+  /* the form lives in a white card */
+  form#btr-form { margin-top: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--msp-r); box-shadow: var(--msp-sh); padding: 26px 28px 24px; }
+  fieldset { border: 0; padding: 0; margin: 0 0 30px; min-width: 0; }
+  legend { font-family: var(--msp-font-display); font-size: 16px; color: var(--navy); font-weight: 700; padding: 0 0 10px; margin-bottom: 18px; border-bottom: 1px solid var(--line); width: 100%; display: flex; align-items: center; gap: 10px; }
+  legend svg { width: 17px; height: 17px; color: var(--accent); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 12.5px; font-weight: 600; color: var(--msp-g7); margin-bottom: 6px; }
+  label .req { color: var(--msp-err); margin-left: 2px; }
+  .hint { font-size: 12px; color: var(--msp-g4); margin-top: 5px; }
+  input[type=text], input[type=email], select, textarea { width: 100%; font: inherit; font-size: 13.5px; font-family: var(--msp-font); color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: var(--msp-rs); padding: 10px 14px; transition: border-color .15s, box-shadow .15s; }
+  textarea { min-height: 160px; resize: vertical; line-height: 1.5; }
+  input::placeholder, textarea::placeholder { color: var(--msp-g4); }
+  input:hover, select:hover, textarea:hover { border-color: var(--msp-g3); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(1,27,60,.08); }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .checks label { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12.5px; color: var(--msp-g5); border: 1.5px solid var(--line); padding: 6px 12px; border-radius: 20px; cursor: pointer; background: #fff; transition: all .15s; margin: 0; }
+  .checks input { accent-color: var(--navy); width: 14px; height: 14px; margin: 0; }
+  .checks label:hover { border-color: var(--msp-g3); color: var(--msp-g7); }
+  .checks label:has(input:checked) { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .counter { font-size: 12px; color: var(--msp-g4); text-align: right; margin-top: 5px; }
+  .counter.over { color: var(--msp-err); }
+
+  .supervisor-row { position: relative; border: 1px dashed var(--msp-g3); border-radius: var(--msp-r); padding: 14px 16px 2px; margin-bottom: 12px; background: var(--msp-g0); }
+  .supervisor-row .row-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .supervisor-row .row-head .role { font-size: 10px; font-weight: 700; color: var(--msp-g4); text-transform: uppercase; letter-spacing: .1em; }
+  .supervisor-row .remove-btn { background: none; border: 0; color: var(--muted); font-size: 12px; cursor: pointer; padding: 4px 6px; border-radius: 4px; font-family: var(--msp-font); }
+  .supervisor-row .remove-btn:hover { color: var(--msp-err); background: var(--msp-err-bg); }
+  .add-supervisor { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--navy); border: 1.5px dashed var(--msp-g3); padding: 8px 14px; font: 600 12.5px var(--msp-font); border-radius: var(--msp-rs); cursor: pointer; margin-top: 2px; transition: all .15s; }
+  .add-supervisor:hover { background: var(--msp-g0); border-style: solid; border-color: var(--navy); }
+  .add-supervisor svg { width: 14px; height: 14px; }
+
+  .form-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 4px; flex-wrap: wrap; }
+  .form-footer .note { font-size: 12px; color: var(--muted); }
+
+  .success, .error { display: none; padding: 12px 16px; border-radius: var(--msp-rs); margin-bottom: 20px; font-size: 13px; border: 1px solid; border-left-width: 4px; }
+  .success { background: var(--msp-ok-bg); border-color: var(--msp-ok-bd); border-left-color: var(--msp-ok); color: var(--msp-ok); }
+  .error { background: var(--msp-err-bg); border-color: var(--msp-err-bd); border-left-color: var(--msp-err); color: var(--msp-err); }
+
+  aside { font-size: 14px; color: var(--muted); position: sticky; top: 24px; align-self: start; }
+  @media (max-width: 920px) { aside { position: static; } }
+  .page-submit-project .info-card { display: flex; align-items: center; gap: 12px; width: 100%; border: 1px solid var(--line); border-radius: var(--msp-r); background: #fff; box-shadow: var(--msp-sh); margin-bottom: 10px; padding: 14px 16px; font: 600 13.5px var(--msp-font); color: var(--navy); text-align: left; cursor: pointer; transition: all .15s; }
+  .page-submit-project .info-card:hover { border-color: var(--msp-g3); transform: translateY(-1px); box-shadow: var(--msp-sh-md); }
+  .info-card .ico { width: 32px; height: 32px; border-radius: 8px; background: var(--msp-a-bg); color: var(--navy); display: grid; place-items: center; flex-shrink: 0; transition: background .15s, color .15s; }
+  .info-card .ico svg { width: 16px; height: 16px; }
+  .info-card .lbl { flex: 1; }
+  .info-card .chev { width: 14px; height: 14px; color: var(--msp-g4); flex-shrink: 0; transition: transform .15s; }
+  .info-card:hover .chev { transform: translateX(3px); color: var(--accent); }
+  .info-card:hover .ico { background: var(--accent); color: #fff; }
+
+  /* info modal: above the sidebar and the drawer toggle */
+  .info-overlay { position: fixed; inset: 0; background: rgba(1,27,60,.55); backdrop-filter: blur(3px); z-index: var(--msp-z-modal); opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .info-overlay.active { opacity: 1; pointer-events: auto; }
+  .page-submit-project .info-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -48%); width: min(560px, calc(100vw - 32px)); max-height: 82vh; background: #fff; border-radius: var(--msp-rl); z-index: calc(var(--msp-z-modal) + 1); opacity: 0; pointer-events: none; transition: all .2s; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--msp-sh-lg), 0 30px 80px -20px rgba(1,27,60,.5); }
+  .page-submit-project .info-modal.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+  .info-modal .head { padding: 18px 24px 14px; border-bottom: 1px solid var(--msp-g1); display: flex; align-items: center; gap: 14px; }
+  .info-modal .head .ico { width: 36px; height: 36px; border-radius: 9px; background: var(--navy); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+  .info-modal .head .ico svg { width: 18px; height: 18px; }
+  .info-modal .head h3 { font-family: var(--msp-font-display); font-weight: 700; font-size: 17px; color: var(--navy); margin: 0; letter-spacing: -.01em; }
+  .info-modal .close { margin-left: auto; background: none; border: 0; font-size: 24px; color: var(--muted); cursor: pointer; line-height: 1; padding: 0 4px; }
+  .info-modal .close:hover { color: var(--navy); }
+  .info-modal .body { padding: 18px 24px 24px; overflow-y: auto; font-size: 13.5px; color: var(--msp-g7); line-height: 1.65; }
+  .info-modal .body p { margin: 0 0 10px; }
+  .info-modal .body ul { margin: 8px 0; padding-left: 20px; list-style: disc; }
+  .info-modal .body li { margin-bottom: 6px; }
+  .info-modal .body strong { color: var(--navy); font-weight: 600; }
+  .info-modal .body a { color: var(--navy); }
+
+  @media (max-width: 640px) {
+    form#btr-form { padding: 18px 16px 16px; }
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:var(--navy);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
-  a:hover{color:var(--accent)}
-
-  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;backdrop-filter:saturate(180%) blur(8px);background:rgba(255,255,255,.92)}
-  .topbar-inner{max-width:var(--max);margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-  .logos{display:flex;align-items:center;gap:22px}
-  .logos img{display:block;height:44px;width:auto}
-  .logos .divider{width:1px;height:34px;background:var(--line)}
-  .topbar nav{font-size:13.5px;color:var(--muted);display:flex;gap:26px}
-  .topbar nav a{color:var(--muted);text-decoration:none;font-weight:500;letter-spacing:.01em}
-  .topbar nav a:hover{color:var(--navy)}
-
-  .hero{background:linear-gradient(180deg,#001C3D 0%, #002a55 100%);color:#fff;border-bottom:3px solid var(--accent);position:relative;overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 85% 20%, rgba(0,162,219,.18), transparent 55%);pointer-events:none}
-  .hero-inner{max-width:var(--max);margin:0 auto;padding:80px 28px 72px;position:relative}
-  .eyebrow{display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:.16em;font-size:11.5px;font-weight:600;color:var(--accent);margin-bottom:18px}
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(0,162,219,.18)}
-  .hero h1{font-family:var(--serif);font-weight:500;font-size:52px;line-height:1.08;margin:0 0 18px;letter-spacing:-.02em;font-variation-settings:"opsz" 144}
-  .hero p{max-width:640px;font-size:17px;color:#cfd6e1;margin:0 0 28px;line-height:1.6}
-  .hero .cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#001C3D;padding:13px 22px;border-radius:6px;font-weight:600;font-size:14px;text-decoration:none;transition:transform .15s, box-shadow .15s}
-  .hero .cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,162,219,.25)}
-  .hero .cta svg{width:16px;height:16px}
-
-  main{max-width:var(--max);margin:0 auto;padding:64px 28px 90px;display:grid;grid-template-columns:1fr 320px;gap:60px}
-  @media (max-width:920px){main{grid-template-columns:1fr;gap:48px;padding:48px 22px 70px}.hero-inner{padding:60px 22px 52px}.hero h1{font-size:38px}}
-
-  section.intro{margin-bottom:48px}
-  section.intro h2{font-family:var(--serif);font-size:28px;color:var(--navy);margin:0 0 14px;font-weight:500;letter-spacing:-.01em}
-  section.intro p{margin:0 0 14px;color:#374151;font-size:15.5px}
-
-  .cohorts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
-  @media (max-width:600px){.cohorts{grid-template-columns:1fr}}
-  .cohort{border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;background:var(--bg-soft);display:flex;gap:14px;align-items:flex-start}
-  .cohort .ico{width:36px;height:36px;flex-shrink:0;border-radius:8px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;color:var(--accent)}
-  .cohort .ico svg{width:18px;height:18px}
-  .cohort h4{margin:0 0 4px;font-size:14px;color:var(--navy);font-weight:600}
-  .cohort p{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
-
-  form{margin-top:8px}
-  fieldset{border:0;padding:0;margin:0 0 40px}
-  legend{font-family:var(--serif);font-size:20px;color:var(--navy);font-weight:500;padding:0 0 12px;margin-bottom:20px;border-bottom:1px solid var(--line);width:100%;display:flex;align-items:center;gap:10px}
-  legend svg{width:18px;height:18px;color:var(--accent)}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media (max-width:600px){.row{grid-template-columns:1fr}}
-  .field{margin-bottom:18px}
-  label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px}
-  label .req{color:#c0392b;margin-left:2px}
-  .hint{font-size:12px;color:var(--muted);margin-top:5px}
-  input[type=text],input[type=email],select,textarea{width:100%;font:inherit;font-size:14.5px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;transition:border-color .15s, box-shadow .15s}
-  textarea{min-height:170px;resize:vertical;line-height:1.6}
-  input::placeholder,textarea::placeholder{color:#9aa3b2}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,162,219,.16)}
-  .checks{display:flex;flex-wrap:wrap;gap:10px}
-  .checks label{display:flex;align-items:center;gap:9px;font-weight:500;color:var(--ink);border:1px solid var(--line);padding:10px 16px;border-radius:6px;cursor:pointer;background:#fff;transition:all .15s;font-size:14px}
-  .checks input{accent-color:var(--accent)}
-  .checks label:hover{border-color:var(--accent);background:#f5fbfd}
-  .counter{font-size:12px;color:var(--muted);text-align:right;margin-top:5px}
-  .counter.over{color:#c0392b}
-
-  .supervisor-row{position:relative;border:1px dashed var(--line);border-radius:var(--radius);padding:14px 16px 4px;margin-bottom:14px;background:#fcfcfd}
-  .supervisor-row .row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .supervisor-row .row-head .role{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-  .supervisor-row .remove-btn{background:none;border:0;color:var(--muted);font-size:13px;cursor:pointer;padding:4px 6px;border-radius:4px;font-family:var(--sans)}
-  .supervisor-row .remove-btn:hover{color:#c0392b;background:#fdecea}
-  .add-supervisor{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--navy);border:1px dashed var(--accent);padding:9px 16px;font:600 13px var(--sans);border-radius:6px;cursor:pointer;margin-top:2px;transition:all .15s}
-  .add-supervisor:hover{background:#f0f8fc;border-style:solid}
-  .add-supervisor svg{width:14px;height:14px}
-
-  button[type=submit]{display:inline-flex;align-items:center;gap:10px;background:var(--navy);color:#fff;border:0;padding:14px 28px;font:600 14.5px var(--sans);border-radius:6px;cursor:pointer;letter-spacing:.01em;transition:background .15s, transform .15s}
-  button[type=submit]:hover{background:var(--accent);transform:translateY(-1px)}
-  button[type=submit] svg{width:15px;height:15px}
-  .form-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:8px;flex-wrap:wrap}
-  .form-footer .note{font-size:12px;color:var(--muted)}
-
-  .success,.error{display:none;padding:16px 18px;border-radius:var(--radius);margin-bottom:24px;font-size:14px}
-  .success{background:#eafaf3;border-left:3px solid #1e9e6a;color:#0f5d3f}
-  .error{background:#fdecea;border-left:3px solid #c0392b;color:#7a1f15}
-
-  aside{font-size:14px;color:var(--muted);position:sticky;top:96px;align-self:start}
-  @media (max-width:920px){aside{position:static}}
-  .info-card{display:flex;align-items:center;gap:12px;width:100%;border:1px solid var(--line);border-radius:var(--radius);background:#fff;margin-bottom:14px;padding:16px 18px;font:600 14px var(--sans);color:var(--navy);text-align:left;cursor:pointer;transition:all .15s}
-  .info-card:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 8px 24px -16px rgba(0,28,61,.3)}
-  .info-card .ico{width:32px;height:32px;border-radius:8px;background:#f0f8fc;color:var(--accent);display:grid;place-items:center;flex-shrink:0;transition:background .15s}
-  .info-card .ico svg{width:16px;height:16px}
-  .info-card .lbl{flex:1}
-  .info-card .chev{width:14px;height:14px;color:var(--muted);flex-shrink:0;transition:transform .15s}
-  .info-card:hover .chev{transform:translateX(3px);color:var(--accent)}
-  .info-card:hover .ico{background:var(--accent);color:#fff}
-
-  .info-overlay{position:fixed;inset:0;background:rgba(0,28,61,.55);backdrop-filter:blur(3px);z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
-  .info-overlay.active{opacity:1;pointer-events:auto}
-  .info-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:min(560px,calc(100vw - 32px));max-height:82vh;background:#fff;border-radius:14px;z-index:101;opacity:0;pointer-events:none;transition:all .2s;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,28,61,.5)}
-  .info-modal.active{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
-  .info-modal .head{padding:22px 26px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
-  .info-modal .head .ico{width:38px;height:38px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;flex-shrink:0}
-  .info-modal .head .ico svg{width:18px;height:18px}
-  .info-modal .head h3{font-family:var(--serif);font-weight:500;font-size:20px;color:var(--navy);margin:0;letter-spacing:-.01em}
-  .info-modal .close{margin-left:auto;background:none;border:0;font-size:24px;color:var(--muted);cursor:pointer;line-height:1;padding:0 4px}
-  .info-modal .close:hover{color:var(--navy)}
-  .info-modal .body{padding:20px 26px 26px;overflow-y:auto;font-size:14.5px;color:#374151;line-height:1.65}
-  .info-modal .body ul{margin:8px 0;padding-left:20px}
-  .info-modal .body li{margin-bottom:6px}
-  .info-modal .body strong{color:var(--navy);font-weight:600}
-  .info-modal .body a{color:var(--accent)}
-
-  footer{background:var(--navy);color:#cfd6e1;border-top:3px solid var(--accent)}
-  .footer-inner{max-width:var(--max);margin:0 auto;padding:38px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-  .footer-inner img{height:38px;width:auto;filter:brightness(0) invert(1);opacity:.95}
-  .footer-inner .contact{font-size:14px}
-  .footer-inner .contact a{color:#fff;text-decoration:underline}
-  .footer-inner .copy{font-size:12px;color:#8a93a3}
 </style>
 </head>
-<body>
+<body class="page-submit-project">
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a href="index.html" class="logos" aria-label="Home">
-      <img src="maastricht-university-logo.png" alt="Maastricht University">
-      <span class="divider"></span>
-      <img src="msp-logo.png" alt="Maastricht Science Programme">
-    </a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="submit-project.html" class="active">For Supervisors</a>
-      <a href="browse-projects.html">For Students</a>
-      <a href="mailto:msp-btr@maastrichtuniversity.nl">Contact</a>
-    </nav>
-  </div>
-</header>
+<main class="msp-main wide">
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow"><span class="dot"></span> Bachelor Thesis Research · Maastricht Science Programme</div>
-    <h1>Propose a BTR project</h1>
-    <p>A short, structured form for research supervisors to share project proposals with Maastricht Science Programme students preparing for their Bachelor Thesis Research.</p>
-    <a href="#submit" class="cta">
+<section class="msp-hero btr-hero">
+  <h1>Propose a BTR project</h1>
+  <p>A short, structured form for research supervisors to share project proposals with Maastricht Science Programme students preparing for their Bachelor Thesis Research.</p>
+  <div class="msp-hero-actions">
+    <a href="#submit" class="msp-btn msp-btn-or">
       Start submission
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
   </div>
 </section>
 
-<main>
+<div class="layout">
   <div>
     <section class="intro" id="about">
       <h2>About the Bachelor Thesis Research</h2>
@@ -358,7 +309,7 @@
 
       <div class="form-footer">
         <span class="note">Submissions are sent to msp-btr@maastrichtuniversity.nl.</span>
-        <button type="submit">
+        <button type="submit" class="msp-btn msp-btn-or msp-btn-lg">
           Submit project
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </button>
@@ -399,14 +350,13 @@
       <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
   </aside>
+</div>
+
 </main>
 
-<footer>
-  <div class="footer-inner">
-    <img src="msp-logo.png" alt="Maastricht Science Programme">
-    <div class="contact">For any questions, contact <a href="mailto:msp-btr@maastrichtuniversity.nl">msp-btr@maastrichtuniversity.nl</a></div>
-    <div class="copy">© Maastricht Science Programme</div>
-  </div>
+<footer class="msp-footer">
+  <p>For any questions, contact <a href="mailto:msp-btr@maastrichtuniversity.nl">msp-btr@maastrichtuniversity.nl</a></p>
+  <p>© Maastricht Science Programme</p>
 </footer>
 
 <div class="info-overlay" id="info-overlay" onclick="closeInfo()"></div>
@@ -559,5 +509,9 @@
     }
   });
 </script>
+
+<!-- Shared MSP frame: nav.js builds the sidebar from the one site navigation -->
+<script src="assets/msp-ui/msp-shell.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>

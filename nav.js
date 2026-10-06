@@ -1,43 +1,68 @@
 /* ============================================
-   BTR Dashboard — Navigation & Accessibility
-   Adds hamburger menu, skip link, breadcrumbs,
-   student journey progress bar, and scroll reveal
+   BTR Dashboard - shared frame + page helpers
+   --------------------------------------------
+   Loaded at the end of every page, AFTER
+   assets/msp-ui/msp-shell.js. It:
+     1. builds the shared MSP sidebar with the one
+        navigation for the whole site (MSPShell.init)
+     2. marks the parent entry active on sub-pages
+        (data-active on <body>, or window.BTR_PAGE)
+     3. adds the breadcrumb kicker inside the hero
+     4. adds the student-journey bar on the five
+        guide pages
+     5. fades .content-section blocks in on scroll
+   The old hamburger menu, overlay and skip link are
+   gone: the shell provides those.
    ============================================ */
 (function () {
-    // --- Skip to Content Link ---
-    var mainContent = document.querySelector('.hero, .page-hero, .hero--centered, .hero--orange, main, .content-section');
-    if (mainContent) {
-        mainContent.id = mainContent.id || 'main-content';
-        var skipLink = document.createElement('a');
-        skipLink.href = '#' + mainContent.id;
-        skipLink.className = 'skip-to-content';
-        skipLink.textContent = 'Skip to content';
-        document.body.insertBefore(skipLink, document.body.firstChild);
+    var NAV = [
+        { label: 'Students', group: true },
+        { label: 'Home', href: 'index.html', icon: 'home', hint: 'BTR at a glance' },
+        { label: 'Before you start', href: 'before-you-start.html', icon: 'compass' },
+        { label: 'Writing the proposal', href: 'writing-the-proposal.html', icon: 'edit' },
+        { label: 'Writing the thesis', href: 'writing-the-thesis.html', icon: 'filetext' },
+        { label: 'Video guidelines', href: 'btr-video.html', icon: 'video' },
+        { label: 'Assessment rubrics', href: 'rubrics.html', icon: 'check' },
+        { label: 'FAQ', href: 'faq.html', icon: 'help' },
+        { label: 'Cohorts', group: true },
+        { label: 'September 2026', href: 'september-cohort-2026.html', icon: 'calendar', hint: 'Dashboard and timeline' },
+        { label: 'February 2027', href: 'february-cohort-2027.html', icon: 'calendar', hint: 'Dashboard and timeline' },
+        { label: 'Supervisors', group: true },
+        { label: 'Supervisor hub', href: 'supervisors.html', icon: 'users' },
+        { label: 'Browse projects', href: 'browse-projects.html', icon: 'book' },
+        { label: 'Submit a project', href: 'submit-project.html', icon: 'briefcase' },
+        { divider: true },
+        { label: 'Contact the BTR office', href: 'mailto:msp-btr@maastrichtuniversity.nl', icon: 'mail', external: true }
+    ];
+
+    /* Sub-pages highlight their parent entry. The body attribute wins,
+       then window.BTR_PAGE, then this fallback map. */
+    var PARENT = {
+        'timeline-september.html': 'september-cohort-2026.html',
+        'timeline-february.html': 'february-cohort-2027.html',
+        'supervisor-role.html': 'supervisors.html',
+        'internal-advisor-role.html': 'supervisors.html',
+        'supervisor-btr-overview.html': 'supervisors.html',
+        '404.html': 'index.html'
+    };
+
+    var path = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    var page = window.BTR_PAGE || {};
+    var active = document.body.getAttribute('data-active') || page.active || PARENT[path] || null;
+
+    if (window.MSPShell) {
+        MSPShell.init({
+            title: 'BTR Dashboard',
+            home: 'index.html',
+            nav: NAV,
+            active: active || undefined,
+            footer: 'Bachelor Thesis Research, Maastricht Science Programme.'
+        });
     }
 
-    // --- Page Load Animation ---
-    document.body.classList.add('page-loaded');
+    var hero = document.querySelector('.msp-hero');
 
-    // --- Scroll Reveal for Content Sections ---
-    document.documentElement.classList.add('js-reveal');
-    var sections = document.querySelectorAll('.content-section');
-    if (sections.length > 0 && 'IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        sections.forEach(function (s) { observer.observe(s); });
-    } else {
-        // Fallback: show everything
-        sections.forEach(function (s) { s.classList.add('visible'); });
-    }
-
-    // --- Breadcrumb Navigation ---
-    var path = window.location.pathname.split('/').pop() || 'index.html';
+    /* --- Breadcrumb kicker (inside the hero, above the title) --- */
     var breadcrumbMap = {
         'february-cohort-2027.html': ['February 2027 Cohort'],
         'september-cohort-2026.html': ['September 2026 Cohort'],
@@ -49,139 +74,86 @@
         'timeline-september.html': ['September 2026 Cohort|september-cohort-2026.html', 'Timeline'],
         'faq.html': ['FAQ'],
         'rubrics.html': ['Assessment Rubrics'],
+        'supervisors.html': ['Supervisors'],
         'supervisor-role.html': ['Supervisors|supervisors.html', 'Supervisor Role'],
-        'supervisor-btr-overview.html': ['Supervisors|supervisors.html', 'BTR Overview']
+        'internal-advisor-role.html': ['Supervisors|supervisors.html', 'Internal Advisor Role'],
+        'supervisor-btr-overview.html': ['Supervisors|supervisors.html', 'BTR Overview'],
+        'browse-projects.html': ['Browse Projects'],
+        'submit-project.html': ['Supervisors|supervisors.html', 'Submit a Project']
     };
-
     var crumbs = breadcrumbMap[path];
-    if (crumbs) {
-        var header = document.querySelector('.header');
-        var hero = document.querySelector('.hero, .page-hero, .hero--centered, .hero--orange');
-        var insertTarget = hero || (header ? header.nextElementSibling : null);
-
-        if (insertTarget) {
-            var breadcrumbNav = document.createElement('nav');
-            breadcrumbNav.className = 'breadcrumbs';
-            breadcrumbNav.setAttribute('aria-label', 'Breadcrumb');
-            var html = '<a href="index.html">Home</a>';
-            for (var i = 0; i < crumbs.length; i++) {
-                html += '<span class="separator" aria-hidden="true">/</span>';
-                var parts = crumbs[i].split('|');
-                if (i < crumbs.length - 1 && parts.length > 1) {
-                    html += '<a href="' + parts[1] + '">' + parts[0] + '</a>';
-                } else {
-                    html += '<span class="current" aria-current="page">' + parts[0] + '</span>';
-                }
+    if (crumbs && hero && !hero.querySelector('.btr-crumbs')) {
+        var crumbNav = document.createElement('nav');
+        crumbNav.className = 'btr-crumbs';
+        crumbNav.setAttribute('aria-label', 'Breadcrumb');
+        var html = '<a href="index.html">Home</a>';
+        for (var i = 0; i < crumbs.length; i++) {
+            html += '<span class="sep" aria-hidden="true">/</span>';
+            var parts = crumbs[i].split('|');
+            if (i < crumbs.length - 1 && parts.length > 1) {
+                html += '<a href="' + parts[1] + '">' + parts[0] + '</a>';
+            } else {
+                html += '<span class="current" aria-current="page">' + parts[0] + '</span>';
             }
-            breadcrumbNav.innerHTML = html;
-            insertTarget.parentNode.insertBefore(breadcrumbNav, insertTarget.nextSibling);
         }
+        crumbNav.innerHTML = html;
+        hero.insertBefore(crumbNav, hero.firstChild);
     }
 
-    // --- Student Journey Progress Indicator ---
+    /* --- Student journey bar (five guide pages) --- */
     var journeyPages = [
-        { label: 'Start', href: 'before-you-start.html', key: 'before-you-start.html' },
-        { label: 'Proposal', href: 'writing-the-proposal.html', key: 'writing-the-proposal.html' },
-        { label: 'Thesis', href: 'writing-the-thesis.html', key: 'writing-the-thesis.html' },
-        { label: 'Video', href: 'btr-video.html', key: 'btr-video.html' },
-        { label: 'Rubrics', href: 'rubrics.html', key: 'rubrics.html' }
+        { label: 'Start', href: 'before-you-start.html' },
+        { label: 'Proposal', href: 'writing-the-proposal.html' },
+        { label: 'Thesis', href: 'writing-the-thesis.html' },
+        { label: 'Video', href: 'btr-video.html' },
+        { label: 'Rubrics', href: 'rubrics.html' }
     ];
-
-    var showJourney = journeyPages.some(function (p) { return p.key === path; });
-
-    if (showJourney) {
-        var headerEl = document.querySelector('.header');
-        if (headerEl) {
-            var bar = document.createElement('div');
-            bar.className = 'journey-progress';
-            bar.setAttribute('aria-label', 'BTR Journey Progress');
-            var activeIndex = journeyPages.findIndex(function (p) { return p.key === path; });
-
-            for (var s = 0; s < journeyPages.length; s++) {
-                if (s > 0) {
-                    var connector = document.createElement('div');
-                    connector.className = 'journey-connector';
-                    bar.appendChild(connector);
-                }
-                var step = document.createElement('a');
-                step.href = journeyPages[s].href;
-                step.className = 'journey-step';
-                if (s === activeIndex) step.classList.add('active');
-                if (s < activeIndex) step.classList.add('completed');
-
-                var dot = document.createElement('span');
-                dot.className = 'journey-step-dot';
-                dot.textContent = s < activeIndex ? '\u2713' : (s + 1);
-
-                var label = document.createElement('span');
-                label.className = 'journey-step-label';
-                label.textContent = journeyPages[s].label;
-
-                step.appendChild(dot);
-                step.appendChild(label);
-                bar.appendChild(step);
+    var activeIndex = -1;
+    for (var j = 0; j < journeyPages.length; j++) { if (journeyPages[j].href === path) activeIndex = j; }
+    if (activeIndex >= 0 && hero) {
+        var bar = document.createElement('nav');
+        bar.className = 'journey-progress';
+        bar.setAttribute('aria-label', 'BTR journey');
+        for (var s = 0; s < journeyPages.length; s++) {
+            if (s > 0) {
+                var connector = document.createElement('span');
+                connector.className = 'journey-connector';
+                bar.appendChild(connector);
             }
-            headerEl.parentNode.insertBefore(bar, headerEl.nextSibling);
+            var step = document.createElement('a');
+            step.href = journeyPages[s].href;
+            step.className = 'journey-step';
+            if (s === activeIndex) { step.classList.add('active'); step.setAttribute('aria-current', 'page'); }
+            if (s < activeIndex) step.classList.add('completed');
+            var dot = document.createElement('span');
+            dot.className = 'journey-step-dot';
+            dot.textContent = s < activeIndex ? '✓' : (s + 1);
+            var label = document.createElement('span');
+            label.className = 'journey-step-label';
+            label.textContent = journeyPages[s].label;
+            step.appendChild(dot);
+            step.appendChild(label);
+            bar.appendChild(step);
+        }
+        hero.parentNode.insertBefore(bar, hero.nextSibling);
+    }
+
+    /* --- Scroll reveal for .content-section (cohort pages) --- */
+    var sections = document.querySelectorAll('.content-section');
+    if (sections.length > 0) {
+        document.documentElement.classList.add('js-reveal');
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(function (s) { observer.observe(s); });
+        } else {
+            sections.forEach(function (s) { s.classList.add('visible'); });
         }
     }
-
-    // --- Mobile Navigation ---
-    var nav = document.querySelector('.nav-menu');
-    if (!nav) return;
-
-    var headerContent = nav.parentElement;
-
-    // Detect if header has dark background
-    var headerForNav = document.querySelector('.header');
-    var headerBg = headerForNav ? getComputedStyle(headerForNav).backgroundColor : '';
-    var isDark = headerBg && headerBg !== 'rgb(255, 255, 255)' && headerBg !== 'rgba(0, 0, 0, 0)';
-
-    // Create hamburger button
-    var btn = document.createElement('button');
-    btn.className = 'hamburger';
-    btn.setAttribute('aria-label', 'Toggle navigation');
-    btn.setAttribute('aria-expanded', 'false');
-    for (var h = 0; h < 3; h++) {
-        var span = document.createElement('span');
-        if (isDark) span.style.background = '#fff';
-        btn.appendChild(span);
-    }
-
-    // Create overlay for closing menu on outside click
-    var overlay = document.createElement('div');
-    overlay.className = 'nav-overlay';
-    document.body.appendChild(overlay);
-
-    // Insert hamburger before nav
-    headerContent.insertBefore(btn, nav);
-
-    function toggle() {
-        var isOpen = nav.classList.toggle('active');
-        btn.classList.toggle('active');
-        overlay.classList.toggle('active');
-        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-    }
-
-    function close() {
-        nav.classList.remove('active');
-        btn.classList.remove('active');
-        overlay.classList.remove('active');
-        btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-    }
-
-    btn.addEventListener('click', toggle);
-    overlay.addEventListener('click', close);
-
-    // Close menu when a nav link is clicked
-    var links = nav.querySelectorAll('a');
-    for (var j = 0; j < links.length; j++) {
-        links[j].addEventListener('click', close);
-    }
-
-    // Close on Escape key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') close();
-    });
 })();

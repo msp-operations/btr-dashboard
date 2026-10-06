@@ -16,38 +16,15 @@
       gtag('config', 'G-KJ51G48F42');
     </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Shared Styles -->
+    <link rel="stylesheet" href="assets/msp-ui/msp-ui.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-content--white">
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <img src="msp-logo.png" alt="MSP Logo">
-                <div>
-                    <div class="logo-text">Maastricht Science Programme</div>
-                    <div class="logo-subtitle">Bachelor Thesis Research</div>
-                </div>
-            </a>
-            <nav class="nav-menu">
-                <a href="index.html">Home</a>
-                <a href="before-you-start.html">Before You Start</a>
-                <a href="#about">About BTR</a>
-                <a href="#platforms">Platforms</a>
-                <a href="#resources">Resources</a>
-                <a href="timeline-september.html">Timeline</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
+    <main class="msp-main wide">
+<!-- Hero Section -->
+    <section class="msp-hero btr-hero">
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Bachelor Thesis Research</h1>
@@ -224,42 +201,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Bachelor Thesis Research</h3>
-                <ul>
-                    <li><a href="timeline-september.html">September Cohort Timeline</a></li>
-                    <li><a href="timeline-february.html">February Cohort Timeline</a></li>
-                    <li><a href="faq.html">Frequently Asked Questions</a></li>
-                    <li><a href="rubrics.html">Assessment Rubrics</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Guidelines</h3>
-                <ul>
-                    <li><a href="writing-the-proposal.html">Writing the Proposal</a></li>
-                    <li><a href="writing-the-thesis.html">Writing the Thesis</a></li>
-                    <li><a href="btr-video.html">Making the BTR Video</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Contact & Support</h3>
-                <ul>
-                    <li><a href="mailto:msp-btr@maastrichtuniversity.nl">BTR Office Email</a></li>
-                    <li><a href="https://collent-fsemsp.maastrichtuniversity.nl/FSE_MSP/Account/Login?ReturnUrl=%2fFSE_MSP%2fHome%2fDashboard" target="_blank" rel="noopener noreferrer">Collent Portal</a></li>
-                    <li><a href="https://canvas.maastrichtuniversity.nl/" target="_blank" rel="noopener noreferrer">Canvas</a></li>
-                    <li><a href="https://intranet.maastrichtuniversity.nl/en/msp-students" target="_blank" rel="noopener noreferrer">MSP Intranet</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© Maastricht University - Faculty of Science and Engineering | Maastricht Science Programme</p>
-        </div>
+    </main>
+    <footer class="msp-footer">
+        <p>Questions? Contact <a href="mailto:msp-btr@maastrichtuniversity.nl">msp-btr@maastrichtuniversity.nl</a></p>
+        <p class="footer-links"><a href="https://collent-fsemsp.maastrichtuniversity.nl/FSE_MSP/Account/Login?ReturnUrl=%2fFSE_MSP%2fHome%2fDashboard" target="_blank" rel="noopener noreferrer">Collent Portal</a><a href="https://canvas.maastrichtuniversity.nl/" target="_blank" rel="noopener noreferrer">Canvas</a><a href="https://intranet.maastrichtuniversity.nl/en/msp-students" target="_blank" rel="noopener noreferrer">MSP Intranet</a></p>
+        <p>© Maastricht University - Faculty of Science and Engineering | Maastricht Science Programme</p>
     </footer>
 
     <!-- Easter Egg -->
@@ -279,6 +225,7 @@
     </div>
 
     <script src="game.js"></script>
+<script src="assets/msp-ui/msp-shell.js"></script>
 <script src="nav.js"></script>
 </body>
 </html>

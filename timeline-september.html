@@ -16,48 +16,14 @@
   gtag('config', 'G-KJ51G48F42');
 </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/msp-ui/msp-ui.css">
     <link rel="stylesheet" href="styles.css">
 
 </head>
-<body class="page-content page-timeline">
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <img src="msp-logo.png" alt="MSP Logo">
-                <div>
-                    <span class="logo-text">Maastricht Science Programme</span>
-                    <span class="logo-subtitle">Bachelor Thesis Research</span>
-                </div>
-            </a>
-            <nav class="nav-menu">
-                <a href="index.html">Home</a>
-                <a href="before-you-start.html">Before You Start</a>
-                <a href="writing-the-proposal.html">Proposal</a>
-                <a href="writing-the-thesis.html">Thesis</a>
-                <a href="btr-video.html">Video</a>
-                <a href="faq.html">FAQ</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <div class="breadcrumb-content">
-            <a href="index.html">BTR Dashboard</a>
-            <span>›</span>
-            <a href="september-cohort-2026.html">September 2026 Cohort</a>
-            <span>›</span>
-            <span>Timeline</span>
-        </div>
-    </div>
-
-    <!-- Page Hero -->
-    <section class="page-hero">
+<body class="page-content page-timeline" data-active="september-cohort-2026.html">
+    <main class="msp-main wide">
+<!-- Page Hero -->
+    <section class="msp-hero btr-hero">
         <div class="page-hero-content">
             <h1>BTR Timeline - September 2026</h1>
             <p>Important submission dates and grade publication days for the September 2026 cohort</p>
@@ -381,16 +347,10 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
+    </main>
+    <footer class="msp-footer">
         <p><strong>Questions about deadlines?</strong> Contact the BTR Office: msp-btr@maastrichtuniversity.nl</p>
-        <p style="margin-top: 20px;">
-            <a href="september-cohort-2026.html">&larr; Back to September Cohort Dashboard</a> |
-            <a href="mailto:msp-btr@maastrichtuniversity.nl">Contact</a>
-        </p>
-        <p style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
-            &copy; Maastricht University - Faculty of Science and Engineering
-        </p>
+        <p>&copy; Maastricht University - Faculty of Science and Engineering</p>
     </footer>
 
     <script>
@@ -484,6 +444,7 @@
             }
         });
     </script>
+<script src="assets/msp-ui/msp-shell.js"></script>
 <script src="nav.js"></script>
 </body>
 </html>

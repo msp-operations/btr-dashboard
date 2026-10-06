@@ -16,62 +16,27 @@
       gtag('config', 'G-KJ51G48F42');
     </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/msp-ui/msp-ui.css">
     <link rel="stylesheet" href="styles.css">
 
     <!-- FAQ visual design + interactive enhancements (scoped to this page) -->
     <style>
-        /* ---- Canvas & container ---- */
-        .page-faq { background: linear-gradient(180deg, #f4f7fb 0%, #e9eef6 100%); }
-        .page-faq .main-content {
-            max-width: 1000px; margin: 0 auto 72px; padding: 0 22px;
-            background: transparent; box-shadow: none; border-radius: 0;
-        }
-
-        /* ---- Header: white like the rest of the site, so the logo stays visible ---- */
-        .page-faq .header {
-            background: var(--white); color: var(--navy);
-            box-shadow: 0 1px 0 #e6ebf2, 0 2px 12px rgba(16, 42, 75, 0.05);
-        }
-        .page-faq .logo { color: var(--navy); }
-        .page-faq .logo-text, .page-faq .logo-subtitle { display: block; }
-        .page-faq .nav-menu a { color: var(--navy); opacity: 1; }
-        .page-faq .nav-menu a:hover { color: var(--cyan-dark); opacity: 1; }
-
-        /* ---- Hero header ---- */
-        .page-faq .page-header { text-align: center; margin: 52px 0 30px; }
-        .page-faq .page-header h1 {
-            font-size: 42px; letter-spacing: -0.025em; line-height: 1.08;
-            margin-bottom: 0; position: relative; display: inline-block;
-        }
-        .page-faq .page-header h1::after {
-            content: ""; position: absolute; left: 50%; bottom: -12px; transform: translateX(-50%);
-            width: 60px; height: 4px; border-radius: 3px;
-            background: linear-gradient(90deg, var(--orange), var(--cyan));
-        }
-        .page-faq .page-header p {
-            font-size: 17px; color: #5a6b7e; line-height: 1.6;
-            max-width: 620px; margin: 26px auto 0;
-        }
 
         /* ---- Search ---- */
         .faq-search { position: relative; }
         .page-faq .search-box.faq-search {
             max-width: 660px; margin: 0 auto 16px; padding: 0;
             background: var(--white); border: 1px solid #e3e9f1; border-left: 1px solid #e3e9f1;
-            border-radius: 14px; box-shadow: 0 12px 30px rgba(16, 42, 75, 0.07);
+            border-radius: 10px; box-shadow: 0 12px 30px rgba(16, 42, 75, 0.07);
             transition: box-shadow var(--transition), border-color var(--transition);
         }
         .page-faq .search-box.faq-search:focus-within {
             border-color: var(--cyan);
-            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.15), 0 12px 30px rgba(16, 42, 75, 0.08);
+            box-shadow: 0 0 0 4px rgba(1, 27, 60, 0.08), 0 12px 30px rgba(16, 42, 75, 0.08);
         }
         .page-faq .search-box.faq-search input {
             width: 100%; border: none; background: transparent;
-            padding: 15px 48px; font-size: 16px; border-radius: 14px;
+            padding: 15px 48px; font-size: 16px; border-radius: 10px;
         }
         .page-faq .search-box.faq-search input:focus { outline: none; }
         .faq-search .search-icon {
@@ -102,19 +67,19 @@
         .faq-chip {
             border: 1px solid #e3e9f1; background: var(--white); color: #2b3a4d;
             padding: 8px 15px; border-radius: 999px; font-size: 13px; font-weight: 600;
-            font-family: var(--font-heading); cursor: pointer;
+            font-family: var(--font-body); cursor: pointer;
             transition: all var(--transition); display: inline-flex; align-items: center; gap: 8px;
             box-shadow: 0 1px 2px rgba(16, 42, 75, 0.04);
         }
         .faq-chip:hover {
-            border-color: var(--cyan); color: var(--cyan-dark);
-            transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 150, 180, 0.14);
+            border-color: var(--cyan); color: var(--msp-inf);
+            transform: translateY(-2px); box-shadow: 0 6px 16px rgba(1, 27, 60, 0.10);
         }
         .faq-chip .chip-count {
             background: #eef3f8; color: #6b7a8d;
             border-radius: 999px; font-size: 11px; padding: 1px 8px; font-weight: 700; line-height: 1.6;
         }
-        .faq-chip:hover .chip-count { background: #e2f5f9; color: var(--cyan-dark); }
+        .faq-chip:hover .chip-count { background: #e2f5f9; color: var(--msp-inf); }
 
         /* ---- Controls ---- */
         .page-faq .controls { justify-content: flex-end; gap: 8px; margin: 0 0 18px; }
@@ -123,16 +88,16 @@
             padding: 8px 14px; font-size: 13px; border-radius: 9px; font-weight: 600;
         }
         .page-faq .control-btn:hover {
-            background: #f6fbfd; color: var(--cyan-dark); border-color: var(--cyan); transform: none;
+            background: #f6fbfd; color: var(--msp-inf); border-color: var(--cyan); transform: none;
         }
         .page-faq .control-btn.secondary { background: var(--white); color: #5a6b7e; }
         .page-faq .control-btn.secondary:hover { color: var(--navy); border-color: #cdd6e2; background: #f7f9fc; }
 
         /* ---- Category card ---- */
         .page-faq .faq-category {
-            border: 1px solid #e6ebf2; border-radius: 16px; background: var(--white);
+            border: 1px solid #e6ebf2; border-radius: 10px; background: var(--white);
             box-shadow: 0 6px 22px rgba(16, 42, 75, 0.05); margin-bottom: 16px;
-            scroll-margin-top: 90px; transition: box-shadow var(--transition), border-color var(--transition);
+            scroll-margin-top: 16px; transition: box-shadow var(--transition), border-color var(--transition);
         }
         .page-faq .faq-category:hover { border-color: #dbe3ee; box-shadow: 0 12px 30px rgba(16, 42, 75, 0.09); }
         .page-faq .faq-category.active { box-shadow: 0 16px 36px rgba(16, 42, 75, 0.10); }
@@ -144,31 +109,31 @@
         }
         .page-faq .category-header::before {
             content: ""; width: 4px; height: 22px; border-radius: 3px; flex-shrink: 0;
-            background: linear-gradient(180deg, var(--cyan), var(--cyan-dark));
+            background: var(--navy);
         }
         .page-faq .category-header:hover { background: #f8fafc; }
         .page-faq .category-header h2 {
             color: var(--navy); font-size: 18px; letter-spacing: -0.01em; margin: 0; flex: 1;
         }
         .page-faq .category-icon {
-            width: 28px; height: 28px; border-radius: 50%; background: #eef6fb; color: var(--cyan-dark);
+            width: 28px; height: 28px; border-radius: 50%; background: #eef6fb; color: var(--msp-inf);
             display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
         }
 
         /* ---- Items & questions ---- */
-        .page-faq .category-content { background: var(--white); border-top: 1px solid #eef2f7; border-radius: 0 0 16px 16px; }
+        .page-faq .category-content { background: var(--white); border-top: 1px solid #eef2f7; border-radius: 0 0 10px 10px; }
         .page-faq .faq-item { border-bottom: none; }
         .page-faq .faq-item + .faq-item { border-top: 1px solid #eef2f7; }
         .page-faq .faq-question { padding: 18px 24px; transition: background var(--transition); }
         .page-faq .faq-question:hover { background: #f8fafc; }
-        .page-faq .faq-item.active > .faq-question { background: #f7fbfe; box-shadow: inset 3px 0 0 var(--cyan); }
+        .page-faq .faq-item.active > .faq-question { background: #f7fbfe; box-shadow: inset 3px 0 0 var(--navy); }
         .page-faq .faq-question h3 { font-size: 15.5px; font-weight: 600; color: var(--navy); line-height: 1.45; }
         .page-faq .question-icon {
-            width: 26px; height: 26px; border-radius: 50%; background: #eef6fb; color: var(--cyan-dark);
+            width: 26px; height: 26px; border-radius: 50%; background: #eef6fb; color: var(--msp-inf);
             display: flex; align-items: center; justify-content: center; font-size: 18px;
             margin-left: 14px; flex-shrink: 0; transition: background var(--transition), color var(--transition);
         }
-        .page-faq .faq-item.active .question-icon { background: var(--cyan); color: var(--white); transform: none; }
+        .page-faq .faq-item.active .question-icon { background: var(--navy); color: var(--white); transform: none; }
 
         /* ---- Answer ---- */
         .page-faq .faq-answer-content {
@@ -178,10 +143,10 @@
         .page-faq .faq-answer-content > *:first-child { margin-top: 0; }
         .page-faq .faq-answer-content strong { color: var(--navy); font-weight: 600; }
         .page-faq .faq-answer-content a {
-            color: var(--cyan-dark); text-decoration: none;
-            border-bottom: 1px solid rgba(0, 150, 180, 0.35); transition: border-color var(--transition);
+            color: var(--msp-inf); text-decoration: none;
+            border-bottom: 1px solid rgba(1, 27, 60, 0.3); transition: border-color var(--transition);
         }
-        .page-faq .faq-answer-content a:hover { border-bottom-color: var(--cyan-dark); }
+        .page-faq .faq-answer-content a:hover { border-bottom-color: var(--msp-inf); }
         .page-faq .faq-answer-content code {
             background: #f1f5f9; border: 1px solid #e3e9f1; padding: 1px 6px;
             border-radius: 5px; font-size: 13px; color: var(--navy);
@@ -210,22 +175,16 @@
         .no-results {
             display: none; text-align: center; padding: 48px 20px; color: #6b7a8d;
             max-width: 640px; margin: 0 auto; background: var(--white);
-            border: 1px solid #e6ebf2; border-radius: 16px; box-shadow: 0 6px 22px rgba(16, 42, 75, 0.05);
+            border: 1px solid #e6ebf2; border-radius: 10px; box-shadow: 0 6px 22px rgba(16, 42, 75, 0.05);
         }
         .no-results.show { display: block; }
         .no-results strong { color: var(--navy); }
-
-        /* ---- Footer: reset the 3-column grid so the message is truly centered ---- */
-        .page-faq .footer-content { display: block; text-align: center; }
-        .page-faq .footer-content p { margin: 0 auto; max-width: 640px; }
 
         /* ---- Expand-all safety (let big categories fully open) ---- */
         .page-faq .faq-category.active .category-content { max-height: 18000px; }
         .page-faq .faq-item.active .faq-answer { max-height: 4000px; }
 
         @media (max-width: 640px) {
-            .page-faq .main-content { padding: 0 14px; }
-            .page-faq .page-header h1 { font-size: 32px; }
             .page-faq .category-header { padding: 16px; }
             .page-faq .faq-question { padding: 16px; }
             .page-faq .faq-answer-content { padding: 2px 16px 20px; }
@@ -233,31 +192,11 @@
     </style>
 </head>
 <body class="page-content page-faq">
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <img src="msp-logo.png" alt="MSP Logo">
-                <div>
-                    <span class="logo-text">Maastricht Science Programme</span>
-                    <span class="logo-subtitle">Bachelor Thesis Research</span>
-                </div>
-            </a>
-            <nav class="nav-menu">
-                <a href="index.html">Home</a>
-                <a href="before-you-start.html">Before You Start</a>
-                <a href="writing-the-proposal.html">Proposal</a>
-                <a href="writing-the-thesis.html">Thesis</a>
-                <a href="btr-video.html">Video</a>
-                <a href="faq.html" style="font-weight: 600;">FAQ</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <div class="page-header">
+<main class="msp-main wide main-content">
+        <section class="msp-hero btr-hero">
             <h1>Frequently Asked Questions</h1>
             <p>Answers to the questions we are asked most often about the Bachelor Thesis Research, organised by stage. Search below, jump to a section, or click any question to expand it.</p>
-        </div>
+        </section>
 
         <div class="search-box faq-search">
             <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1024,10 +963,9 @@
 
     </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <p>Is your question not here? Please send an email to <a href="mailto:msp-btr@maastrichtuniversity.nl?subject=FAQ%20Question">msp-btr@maastrichtuniversity.nl</a> with the subject <strong>FAQ Question</strong></p>
-        </div>
+    <footer class="msp-footer">
+        <p>Is your question not here? Please send an email to <a href="mailto:msp-btr@maastrichtuniversity.nl?subject=FAQ%20Question">msp-btr@maastrichtuniversity.nl</a> with the subject <strong>FAQ Question</strong></p>
+        <p>&copy; Maastricht University - Faculty of Science and Engineering | Maastricht Science Programme</p>
     </footer>
 
     <script>
@@ -1161,6 +1099,7 @@
             });
         });
     </script>
-    <script src="nav.js"></script>
+    <script src="assets/msp-ui/msp-shell.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>
