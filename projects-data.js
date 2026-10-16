@@ -802,4 +802,35 @@ window.BTR_PROJECTS = [
     note: "Contact the supervisor for more detailed information. The project can be tuned more theoretical or can have a programming component.",
     dateAdded: "2026-06"
   },
+  {
+    title: "Ab initio investigation of single-molecule magnets",
+    supervisor: "Dr. Slava Vieru",
+    institution: "Maastricht Science Programme",
+    location: "Maastricht",
+    email: "v.vieru@maastrichtuniversity.nl",
+    disciplines: ["Chemistry","Materials Science","Other"],
+    types: ["Modelling"],
+    description: "Calculate the electronic structure of magnetic molecules with the CASSCF approach in Molcas, to help interpret experimental magnetic properties and predict new materials.",
+    background: "The goal of this project is to calculate the electronic structure of certain magnetic molecules via the CASSCF approach within Molcas. The results of the calculations will help interpret experimental magnetic properties and also predict new materials. Students learn how to run quantum chemistry calculations on DSRI, the supercomputer of Maastricht University.",
+    methods: "Ab initio CASSCF calculations in Molcas, spin-orbit coupling, analysis of large magnetic anisotropy",
+    note: "Subspecialisation: computational/quantum chemistry. Available in both the September and February cohorts.",
+    references: ["V. Vieru, S. Gómez-Coca, E. Ruiz, L. F. Chibotaru, Angew. Chem. Int. Ed. 2024, 63, e202303146. https://doi.org/10.1002/anie.202303146","V. Vieru, N. Iwahara, D. Komijani, S. Hill, W. Wernsdorfer, L. F. Chibotaru. Toward a Microscopic Understanding of the Magnetization Behavior of a Multimolecular Single Crystal of Radical-Bridged [DyIII4] Cubane Units: A Joint Ab Initio, Micro-SQUID, and EPR Study. J. Phys. Chem. C 2018, 122 (20), 11128–11135. https://doi.org/10.1021/acs.jpcc.8b01582"],
+    dateAdded: "2026-10"
+  },
+  {
+    title: "Comparative anatomy and functional morphology at MSP",
+    supervisor: "Dr. Jesse Hennekam",
+    institution: "Maastricht Science Programme",
+    location: "Maastricht",
+    email: "j.hennekam@maastrichtuniversity.nl",
+    disciplines: ["Other"],
+    types: ["Data Analysis","Simulation","Modelling"],
+    description: "Quantify shape change in fossil and living animals with 3D scanning, geometric morphometrics and finite element analysis, and work out what it means for function and adaptation.",
+    background: "The research focuses on functional morphological variation within animals. By combining 3D scanning techniques with methods like geometric morphometrics (GMM) and finite element analysis (FEA), shape change can be quantified and its functional implications understood. Modern techniques are used to better understand how animals adapt to their environment, focusing on both fossil species and extant taxa. Previous BTR students have worked on the topics listed under Details.",
+    details: ["Giant hedgehogs from Gargano (GMM)","The dwarfed mouse goat from Mallorca (GMM, conference presentations, currently in review)","Compressive loading on elephant legs (FEA, conference presentation, published 2026)","Seal limb bone morphology (GMM + anatomy)","Dinosaur brains (endocasts, converting to paper)","Deer tracks (GMM)","Mosasaur teeth, skulls and vertebrae (GMM + FEA, conference presentation)","Sea urchins (GMM)","Squirrel skulls (GMM + conference presentation)","Maastrichtian type locality (fieldwork)","Giant shrews from the Balearics (GMM)","Reconstructing Pleistocene Maastricht (palaeoenvironment)","The primate skull (GMM)"],
+    methods: "3D scanning, geometric morphometrics (GMM), finite element analysis (FEA), comparative anatomy, museum collections, fieldwork",
+    note: "Subspecialisations: comparative anatomy, island evolution, palaeontology. Available in both the September and February cohorts.",
+    references: ["Example of a student paper: https://doi.org/10.1111/joa.70234"],
+    dateAdded: "2026-10"
+  },
 ];
